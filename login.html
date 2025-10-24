@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Firebase SDK 読み込み -->
+    <script type="module" src="js/auth.js"></script>
+</head>
+<body>
+    <h1>ログイン</h1>
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="メールアドレス">
+        <input type="password" id="password" placeholder="パスワード">
+        <button type="submit">ログイン</button>
+    </form>
 
+    <form id="signupForm">
+        <input type="email" id="signupEmail" placeholder="メールアドレス">
+        <input type="password" id="signupPassword" placeholder="パスワード">
+        <button type="submit">アカウント作成</button>
+    </form>
+
+    <script type="module">
+        import { login, signup } from './js/auth.js';
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                const userCredential = await login(email, password);
+                alert('ログイン成功: ' + userCredential.user.email);
+                location.href = 'index.html'; // ログイン成功後の遷移
+            } catch (err) {
+                alert('ログイン失敗: ' + err.message);
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            try {
+                const userCredential = await signup(email, password);
+                alert('アカウント作成成功: ' + userCredential.user.email);
+            } catch (err) {
+                alert('作成失敗: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>
